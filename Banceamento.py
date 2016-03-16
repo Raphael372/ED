@@ -8,6 +8,10 @@ def esta_balanceada(expressao):
     Deverá ser usada como estrutura de dados apenas a pilha feita na aula anterior
     :param expressao: string com expressao a ser balanceada
     :return: boleano verdadeiro se expressao está balanceada e falso caso contrário
+    TEMPO DE EXECUCAO:
+        O(n)
+    ESPACO DE MEMORIA:
+        O(n)
     """
 
     validos = [
