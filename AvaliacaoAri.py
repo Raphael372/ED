@@ -6,7 +6,7 @@
 from aula04.Pilha import Pilha
 from aula05.Fila import Fila
 
-def num(s):
+def numero(s):
     try:
         s = int(s)
         return True
@@ -22,51 +22,61 @@ class ErroSintatico(Exception):
 
 
 def analise_lexica(expressao):
-    def caracteres(param1):
-        return param1 in "(){.}[]+-*/"
+    def digitos(param):
+        return param in "(){.}[]+-*/"
+    """
+    Executa análise lexica transformando a expressao em fila de objetos:
+    Transforma inteiros em ints
+    Flutuantes em floats
+    e verificar se demais digitos são validos: +-*/(){}[]
+    :param expressao: string com expressao a ser analisada
+    :return: fila com tokens
+    """
 
+    cont = 0
     fila = Fila()
-    count = 0
     pilha = Pilha()
-    while count != len(expressao):
-        if not (caracteres(expressao[count]) or num(expressao[count])):
+    while cont != len(expressao):
+        if not (digitos(expressao[cont]) or numero(expressao[cont])):
             raise ErroLexico
-        else:
-            if caracteres(expressao[count]):
+
+        elif digitos(expressao[cont]):
                 if not pilha.vazia():
                     fila.enfileirar(pilha.desempilhar())
-                fila.enfileirar(expressao[count])
-            if num(expressao[count]):
+                fila.enfileirar(expressao[cont])
+        if numero(expressao[cont]):
                 if pilha.vazia():
-                    pilha.empilhar(expressao[count])
+                    pilha.empilhar(expressao[cont])
                 else:
                     final = pilha.desempilhar()
-                    pilha.empilhar(final + expressao[count])
-        count += 1
+                    pilha.empilhar(final + expressao[cont])
+        cont= cont + 1
     if not pilha.vazia():
         fila.enfileirar(pilha.desempilhar())
     return fila
 
 
 def analise_sintatica(fila):
+
     novafila = Fila()
     if fila.vazia():
         raise ErroSintatico;
-    save = ''
+    guard = ''
     while not fila.vazia():
         item = fila.desenfileirar()
-        if num(item):
-            save = int(item)
+        if numero(item):
+            guard = int(item)
             if fila.vazia():
-                novafila.enfileirar(save)
+                novafila.enfileirar(guard)
                 return novafila
             if fila.primeiro() != '.':
-                novafila.enfileirar(save)
-        elif item == '.':
+                novafila.enfileirar(guard)
+    else:
+        if item == '.':
             item = fila.desenfileirar()
-            save = float(save)
-            save += (float(item)) / (10 ** (len(item)))
-            novafila.enfileirar(save)
+            guard = float(guard)
+            guard += (float(item)) / (10 ** (len(item)))
+            novafila.enfileirar(guard)
         else:
             novafila.enfileirar(item)
     return novafila
@@ -85,7 +95,7 @@ def avaliar(expressao):
             v1 = resultado.desempilhar()
             v2 = resultado.desempilhar()
             v3 = resultado.desempilhar()
-            if num(v1) and v2 in '+/*-' and num(v3):
+            if numero(v1) and v2 in '+/*-' and numero(v3):
                 if v2 == '+':
                     resultado.empilhar(v3+v1)
                 elif v2 == '-':
@@ -94,11 +104,11 @@ def avaliar(expressao):
                     resultado.empilhar(v3/v1)
                 elif v2 == '*':
                     resultado.empilhar(v3*v1)
-            elif str(v3) in '({[' and num(v2) and str(v1) in ')}]':
+            elif str(v3) in '({[' and numero(v2) and str(v1) in ')}]':
                 resultado.empilhar(v2)
             elif str(v1) in '}])':
                 verificar = resultado.desempilhar()
-                if num(verificar) and num(v2):
+                if numero(verificar) and numero(v2):
                     resultado.desempilhar()
                     if str(v3) == '+':
                         resultado.empilhar(verificar+v2)
@@ -108,9 +118,9 @@ def avaliar(expressao):
                         resultado.empilhar(verificar/v2)
                     elif str(v3) == '*':
                         resultado.empilhar(verificar*v2)
-            elif str(v1) in '/*-+' and num(v2) and str(v3) in ']})':
+            elif str(v1) in '/*-+' and numero(v2) and str(v3) in ']})':
                 verificar = fila.desenfileirar()
-                if num(verificar):
+                if numero(verificar):
                     if v1 == '+':
                         resultado.empilhar(v2+verificar)
                     elif v1 == '-':
