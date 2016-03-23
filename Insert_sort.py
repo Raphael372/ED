@@ -3,7 +3,7 @@ import unittest
 
 def insert_sort(seq):
     ''' sorteia a sequencia usando o insertion sort ,
-     complexidade O(n)²   '''
+     complexidade de tempo O(n)²  e de espaço O(1) '''
     for i in range(1, len(seq)):
         j = i
         while j > 0 and seq[j-1] > seq[j]:
