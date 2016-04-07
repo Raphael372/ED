@@ -3,28 +3,34 @@ Análise de Complexidade:
     O quickSort roda em o de n ao quadrado em tempo de execução (no pior caso),
     e O log(n) de memória
     '''
-
-
 def _quick_recursivo(seq, inicio, final):
-    if inicio >= final:
+    if len(seq)<=1:
         return seq
     indice_pivot = final
-    pivot = seq[-1]
+    pivot = seq[indice_pivot]
     i_esquerda = inicio
     i_direita = final - 1
 
-    # posicionar pivot
+    while i_esquerda != i_direita:
+        while seq[i_esquerda] > pivot and seq[i_direita] < pivot:
+            seq[i_esquerda], seq[i_direita] = seq[i_direita], seq[i_esquerda]
+        else:
+            if seq[i_esquerda] <= pivot:
+                i_esquerda+=1
+            else:
+                if seq[i_direita] >= pivot:
+                    i_direita-=1
 
-    # Resolver para sublista da esquerda
-
-    # Resolver para sublista da direita
-
-    return seq
+    if  seq[-1]!=max(seq) :
+        seq[i_direita] > seq[i_esquerda]
+        seq[i_direita], seq[indice_pivot] = seq[indice_pivot], seq[i_direita]
+    menor = _quick_recursivo(seq[:i_direita+1], 0, len(seq[:i_direita+1])-1)
+    maior = _quick_recursivo(seq[i_esquerda+1:], 0, len(seq[i_esquerda+1:])-1)
+    return menor+maior
 
 
 def quick_sort(seq):
     return _quick_recursivo(seq, 0, len(seq) - 1)
-
 
 class OrdenacaoTestes(unittest.TestCase):
     def teste_lista_vazia(self):
@@ -39,12 +45,12 @@ class OrdenacaoTestes(unittest.TestCase):
     def teste_lista_desordenada(self):
         self.assertListEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], quick_sort([9, 7, 1, 8, 5, 3, 6, 4, 2, 0]))
 
-    def teste_lista_com_elementos_repetidos(self):
-        self.assertListEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9], quick_sort([9, 7, 1, 8, 5, 3, 6, 4, 2, 0, 9, 9]))
-
-    def teste_lista_so_com_elementos_repetidos(self):
-        self.assertListEqual([9, 9, 9], quick_sort([9, 9, 9]))
-
-
 if __name__ == '__main__':
     unittest.main()
+
+
+
+
+
+
+
