@@ -1,6 +1,6 @@
 import unittest
 Análise de Complexidade:
-    O quickSort roda em o de n ao quadrado em tempo de execução (no pior caso),
+    '''O quickSort roda em o de n ao quadrado em tempo de execução (no pior caso),
     e O log(n) de memória
     '''
 def _quick_recursivo(seq, inicio, final):
