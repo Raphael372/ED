@@ -1,6 +1,5 @@
 def busca_binaria(seq, procurado):
-    """
-
+    """ 
     Análise de Complexidade: O(n) em tempo e O(1) em espaço
     """
 
