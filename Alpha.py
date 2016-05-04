@@ -3,22 +3,23 @@ from itertools import product
 
 regra = {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wzyz'}
 '''
-    ANALISE DE TEMPO:
-        O(n²)
-    ANALISE DE ESPACO:
-        O(n)
+    :
+   O(n²) de tempo
+   O(n) de espaço
 '''
 
 def gerar_alfa(s):
-    resultado = [()]
-    for numero_chave in s:
-        index = len(resultado)-1
-        while index>=0:
-            tupla_atual = resultado.pop(0)
-            for digito in regra[numero_chave]:
-                resultado.append(tupla_atual+(digito,))
-            index-=1
-    return resultado
+    result = [tuple()]
+    for num_key in s:
+        pos = len(result)-1
+        while pos>=0:
+            t_atual = result.pop(pos)
+            for digito in regra[num_key]:
+                result.append(t_atual+tuple(digito,))
+            pos-=1
+    return result
+
+
 
 
 class Testes(unittest.TestCase):
